@@ -1,0 +1,56 @@
+{
+    "partnerName": "starterkit",
+    "ci": {
+        "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit",
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "mailGroup": "sitexp@microsoft.com",
+        "labelExpression": "templating-ci"
+    },
+    "opbuild": {
+        "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "mailGroup": "sitexp@microsoft.com",
+        "labelExpression": "templating-ci",
+        "branchMapping": {
+            "develop": {
+                "contentBranch": "develop_e2e",
+                "opbuildEnv": "sandbox"
+            },
+            "release": {
+                "contentBranch": "release_e2e",
+                "opbuildEnv": "prod"
+            },
+            "hotfix": {
+                "contentBranch": "hotfix_e2e",
+                "opbuildEnv": "prod"
+            }
+        }
+    },
+    "e2e": {
+        "commonE2eRepoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Templating.Components.E2E",
+        "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "mailGroup": "sitexp@microsoft.com, v-peliao@microsoft.com, v-yajlu@microsoft.com, v-susu@microsoft.com",
+        "labelExpression": "e2e",
+        "branchMapping": {
+            "develop": {
+                "sourceBranch": "develop",
+                "baseUrl": "https://opsdocsint.azurewebsites.net",
+                "configFile": "test/protractor.config.js",
+                "contentBranch": "develop_e2e"
+            },
+            "release": {
+                "sourceBranch": "develop",
+                "baseUrl": "https://opsdocs.azurewebsites.net",
+                "configFile": "test/protractor.config.js",
+                "contentBranch": "release_e2e"
+            },
+            "hotfix": {
+                "sourceBranch": "master",
+                "baseUrl": "https://opsdocs.azurewebsites.net",
+                "configFile": "test/protractor.config.js",
+                "contentBranch": "hotfix_e2e"
+            }
+        }
+    }
+}
