@@ -2,13 +2,13 @@
     "partnerName": "starterkit",
     "ci": {
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit",
-        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30",
         "mailGroup": "sitexp@microsoft.com",
         "labelExpression": "templating-ci"
     },
     "opbuild": {
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
-        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30",
         "mailGroup": "sitexp@microsoft.com",
         "labelExpression": "templating-ci",
         "branchMapping": {
@@ -29,7 +29,7 @@
     "e2e": {
         "commonE2eRepoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Templating.Components.E2E",
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
-        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30", // sitexp ssh key
+        "credentialId": "22a71fcc-2ea3-4705-a247-d7ad0c75fe30",
         "mailGroup": "sitexp@microsoft.com, v-peliao@microsoft.com, v-yajlu@microsoft.com, v-susu@microsoft.com",
         "labelExpression": "e2e",
         "branchMapping": {
