@@ -4,7 +4,61 @@
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit",
         "credentialId": "starterkitsitexpcissh",
         "mailGroup": "sitexp@microsoft.com",
-        "labelExpression": "node_slave"
+        "labelExpression": "node_slave",
+        "branchMapping": {
+            "develop": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "npm run opst -- deployTheme -B docker_develop"
+                ]
+            },
+            "release": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "npm run opst -- deployTheme -B docker_release"
+                ],
+                "bumpVersionSteps": [
+                    "npm version minor",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "git push --follow-tags ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit HEAD:release"
+                ]
+            },
+            "hotfix": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "npm run opst -- deployTheme -B docker_hotfix"
+                ],
+                "bumpVersionSteps": [
+                    "npm version patch",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "git push --follow-tags ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit HEAD:hotfix"
+                ]
+            },
+            "master": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "npm run opst -- deployTheme -B docker_master"
+                ]
+            }
+        }
     },
     "opbuild": {
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
@@ -13,43 +67,99 @@
         "labelExpression": "node_slave",
         "branchMapping": {
             "develop": {
-                "contentBranch": "develop_e2e",
-                "opbuildEnv": "sandbox"
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch develop_e2e",
+                    "npm run opse2e -- publishE2eTestData --buildEndpoint sandbox --buildBranch develop_e2e"
+                ]
             },
             "release": {
-                "contentBranch": "release_e2e",
-                "opbuildEnv": "prod"
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch release_e2e",
+                    "npm run opse2e -- publishE2eTestData --buildEndpoint prod --buildBranch release_e2e"
+                ]
             },
             "hotfix": {
-                "contentBranch": "hotfix_e2e",
-                "opbuildEnv": "prod"
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "npm install && npm update",
+                    "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch hotfix_e2e",
+                    "npm run opse2e -- publishE2eTestData --buildEndpoint prod --buildBranch hotfix_e2e"
+                ]
             }
         }
     },
     "e2e": {
-        "commonE2eRepoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Templating.Components.E2E",
-        "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
+        "repoUrl": [
+            "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Templating.Components.E2E",
+            "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E"
+        ],
         "credentialId": "starterkitsitexpcissh",
         "mailGroup": "sitexp@microsoft.com, v-peliao@microsoft.com, v-yajlu@microsoft.com, v-susu@microsoft.com",
         "labelExpression": "e2e_slave",
         "branchMapping": {
             "develop": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "cd Templating.Components.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName develop_e2e --noEscalation",
+                    "",
+                    "cd ../Template.StarterKit.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName develop_e2e --noEscalation",
+                    "",
+                    "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
+                ],
                 "sourceBranch": "develop",
-                "baseUrl": "https://opsdocsint.azurewebsites.net",
-                "configFile": "test/protractor.config.js",
-                "contentBranch": "develop_e2e"
+                "archiveArtifacts": "Template.StarterKit.E2E/result/e2e/screenshots/**/*.*"
             },
             "release": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "cd Templating.Components.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
+                    "",
+                    "cd ../Template.StarterKit.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
+                    "",
+                    "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
+                ],
                 "sourceBranch": "develop",
-                "baseUrl": "https://opsdocs.azurewebsites.net",
-                "configFile": "test/protractor.config.js",
-                "contentBranch": "release_e2e"
+                "archiveArtifacts": "Template.StarterKit.E2E/result/e2e/screenshots/**/*.*"
             },
             "hotfix": {
+                "buildSteps": [
+                    "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
+                    ". cinpmrc",
+                    "cd Templating.Components.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
+                    "",
+                    "cd ../Template.StarterKit.E2E",
+                    "npm install && npm update",
+                    "npm run opse2e -- init",
+                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
+                    "",
+                    "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
+                ],
                 "sourceBranch": "master",
-                "baseUrl": "https://opsdocs.azurewebsites.net",
-                "configFile": "test/protractor.config.js",
-                "contentBranch": "hotfix_e2e"
+                "archiveArtifacts": "Template.StarterKit.E2E/result/e2e/screenshots/**/*.*"
             }
         }
     }
