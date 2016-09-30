@@ -13,6 +13,8 @@
                     "npm install && npm update",
                     "SSH_CREDENTIALID=starterkitsitexpcissh",
                     ". cissh",
+                    "git config --global user.name sitexpci",
+                    "git config --global user.email sitexpci@microsoft.com",
                     "npm run opst -- deployTheme -B docker_develop"
                 ]
             },
@@ -23,6 +25,8 @@
                     "npm install && npm update",
                     "SSH_CREDENTIALID=starterkitsitexpcissh",
                     ". cissh",
+                    "git config --global user.name sitexpci",
+                    "git config --global user.email sitexpci@microsoft.com",
                     "npm run opst -- deployTheme -B docker_release"
                 ],
                 "bumpVersionSteps": [
@@ -39,6 +43,8 @@
                     "npm install && npm update",
                     "SSH_CREDENTIALID=starterkitsitexpcissh",
                     ". cissh",
+                    "git config --global user.name sitexpci",
+                    "git config --global user.email sitexpci@microsoft.com",
                     "npm run opst -- deployTheme -B docker_hotfix"
                 ],
                 "bumpVersionSteps": [
@@ -55,6 +61,8 @@
                     "npm install && npm update",
                     "SSH_CREDENTIALID=starterkitsitexpcissh",
                     ". cissh",
+                    "git config --global user.name sitexpci",
+                    "git config --global user.email sitexpci@microsoft.com",
                     "npm run opst -- deployTheme -B docker_master"
                 ]
             }
@@ -71,8 +79,8 @@
                     "NPMRC_CREDENTIALID=starterkitsitexpcinpmrc",
                     ". cinpmrc",
                     "npm install && npm update",
-                    "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch develop_e2e",
-                    "npm run opse2e -- publishE2eTestData --buildEndpoint sandbox --buildBranch develop_e2e"
+                    "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch starterkitdocker_develop_e2e",
+                    "npm run opse2e -- publishE2eTestData --buildEndpoint sandbox --buildBranch starterkitdocker_develop_e2e"
                 ]
             },
             "release": {
@@ -110,13 +118,11 @@
                     ". cinpmrc",
                     "cd Templating.Components.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName develop_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName starterkitdocker_develop_e2e --noEscalation",
                     "",
                     "cd ../Template.StarterKit.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName develop_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocsint.azurewebsites.net --branchName starterkitdocker_develop_e2e --noEscalation",
                     "",
                     "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
                 ],
@@ -129,13 +135,11 @@
                     ". cinpmrc",
                     "cd Templating.Components.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
                     "",
                     "cd ../Template.StarterKit.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName release_e2e --noEscalation",
                     "",
                     "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
                 ],
@@ -148,13 +152,11 @@
                     ". cinpmrc",
                     "cd Templating.Components.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
                     "",
                     "cd ../Template.StarterKit.E2E",
                     "npm install && npm update",
-                    "npm run opse2e -- init",
-                    "npm run opse2e -- protractor --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
+                    "npm run opse2e -- gProtractor --maxInstances 2 --configFile test/protractor.config.js --baseUrl https://opsdocs.azurewebsites.net --branchName hotfix_e2e --noEscalation",
                     "",
                     "npm run opse2e -- reporter --src 'result/e2e/screenshots' --src '../Templating.Components.E2E/result/e2e/screenshots' --dest 'result/e2e/screenshots'"
                 ],
