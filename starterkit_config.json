@@ -68,6 +68,30 @@
             }
         }
     },
+    "bumpVersion": {
+        "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit",
+        "credentialId": "starterkitsitexpcissh",
+        "mailGroup": "sitexp@microsoft.com",
+        "labelExpression": "node_slave",
+        "branchMapping": {
+            "release": {
+                "buildSteps": [
+                    "npm version minor",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "git push --follow-tags ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit HEAD:release"
+                ]
+            },
+            "hotfix": {
+                "buildSteps": [
+                    "npm version patch",
+                    "SSH_CREDENTIALID=starterkitsitexpcissh",
+                    ". cissh",
+                    "git push --follow-tags ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit HEAD:hotfix"
+                ]
+            }
+        }
+    },
     "opbuild": {
         "repoUrl": "ssh://mseng@mseng.visualstudio.com:22/VSChina/_git/Template.StarterKit.E2E",
         "credentialId": "starterkitsitexpcissh",
@@ -81,7 +105,8 @@
                     "npm install && npm update",
                     "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch starterkitdocker_develop_e2e",
                     "npm run opse2e -- publishE2eTestData --buildEndpoint sandbox --buildBranch starterkitdocker_develop_e2e"
-                ]
+                ],
+                "sourceBranch": "develop"
             },
             "release": {
                 "buildSteps": [
@@ -90,7 +115,8 @@
                     "npm install && npm update",
                     "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch release_e2e",
                     "npm run opse2e -- publishE2eTestData --buildEndpoint prod --buildBranch release_e2e"
-                ]
+                ],
+                "sourceBranch": "develop"
             },
             "hotfix": {
                 "buildSteps": [
@@ -99,7 +125,8 @@
                     "npm install && npm update",
                     "npm run opse2e -- mergeE2eTestData --sourceBranch master --targetBranch hotfix_e2e",
                     "npm run opse2e -- publishE2eTestData --buildEndpoint prod --buildBranch hotfix_e2e"
-                ]
+                ],
+                "sourceBranch": "develop"
             }
         }
     },
